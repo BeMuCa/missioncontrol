@@ -140,6 +140,9 @@ func (m *Model) footer(width int) string {
 	} else {
 		hints += " · f star · F favorites"
 	}
+	if m.allowBack {
+		hints += " · esc projects"
+	}
 	// A footer wider than the window wraps onto a second row and pushes the
 	// board off the top.
 	return styMeta.Render(truncate(hints, width))

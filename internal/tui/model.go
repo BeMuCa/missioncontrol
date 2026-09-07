@@ -81,6 +81,12 @@ type Model struct {
 	showSessions bool
 	sessIdx      int
 
+	// allowBack makes esc leave the board for the launcher instead of quitting,
+	// which is only right when there is a launcher to go back to. back reports
+	// that it happened, since bubbletea has no other way to say why it stopped.
+	allowBack bool
+	back      bool
+
 	width, height int
 	err           string
 }
@@ -130,6 +136,13 @@ func (m *Model) markdown(text string, width int) []string {
 
 // SetStacked chooses the layout the board opens in.
 func (m *Model) SetStacked(v bool) { m.stacked = v }
+
+// AllowBack makes esc return to the launcher rather than quit. Without it esc
+// quits, which is what a board opened directly on a session should still do.
+func (m *Model) AllowBack() { m.allowBack = true }
+
+// WentBack reports whether the board was left with esc rather than quit.
+func (m *Model) WentBack() bool { return m.back }
 
 // openSessions loads the sessions in this directory and shows the picker.
 func (m *Model) openSessions() {
@@ -192,6 +205,9 @@ func (m *Model) key(k tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		if m.showFavs && m.favOnText {
 			m.favOnText = false
 			return m, nil
+		}
+		if m.allowBack {
+			m.back = true
 		}
 		return m, tea.Quit
 	case "q", "ctrl+c":

@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 )
 
 // Session is one live session as `claude agents --json` reports it.
@@ -174,4 +175,27 @@ func firstLineOf(s string) string {
 		s = s[:60]
 	}
 	return s
+}
+
+// Summary counts the session transcripts belonging to a project root and
+// reports when the newest was last written. It globs and stats rather than
+// reading, so the launcher can describe twenty projects without parsing a
+// single transcript.
+func Summary(home, root string) (n int, newest time.Time) {
+	slug := strings.ReplaceAll(root, string(filepath.Separator), "-")
+	matches, err := filepath.Glob(filepath.Join(home, ".claude", "projects", slug, "*.jsonl"))
+	if err != nil {
+		return 0, time.Time{}
+	}
+	for _, p := range matches {
+		fi, err := os.Stat(p)
+		if err != nil {
+			continue
+		}
+		n++
+		if fi.ModTime().After(newest) {
+			newest = fi.ModTime()
+		}
+	}
+	return n, newest
 }

@@ -397,3 +397,33 @@ func TestRefreshRereadsARewrittenTranscript(t *testing.T) {
 		t.Errorf("footer = %q, want the r hint", m.footer(200))
 	}
 }
+
+func TestEscQuitsUnlessTheLauncherIsBehindIt(t *testing.T) {
+	// A board opened directly on a session has nowhere to go back to, so esc
+	// still means quit there.
+	m := testModel(t)
+	m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
+	if m.WentBack() {
+		t.Error("esc must not report a return when there is no launcher")
+	}
+
+	m = testModel(t)
+	m.AllowBack()
+	m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
+	if !m.WentBack() {
+		t.Error("esc must return to the launcher once AllowBack is set")
+	}
+}
+
+func TestEscClosesAnOverlayBeforeLeavingTheBoard(t *testing.T) {
+	m := testModel(t)
+	m.AllowBack()
+	m.showSessions = true
+	m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
+	if m.showSessions {
+		t.Error("esc must close the session picker first")
+	}
+	if m.WentBack() {
+		t.Error("closing an overlay must not also leave the board")
+	}
+}
