@@ -7,8 +7,12 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-// The launcher's mark: an agent — round head under a dark beanie, thick
-// glasses, a small earpiece, and a turtleneck rolled up at the neck.
+// The launcher's mark: an agent — round head under a dark beanie, heavy
+// Wayfarer glasses, a small earpiece, and a turtleneck rolled up at the neck.
+//
+// The frame is what carries the face, so it gets the room: three rows of brow
+// bar over two square lenses with two-pixel rims, and each lens closed by its
+// own bottom rim rather than by one bar across, which read as a block.
 //
 // It is kept as a pixel map rather than as pre-rendered escape codes so it can
 // be edited by looking at it. Two pixel rows share one text row through the
@@ -16,27 +20,31 @@ import (
 // pixel is about as wide as it is tall, where a text cell is twice as tall as
 // it is wide.
 var logoPixels = []string{
-	".............BBBBBBB..............",
-	"..........BBBBBBBBBBBBB...........",
-	"........BBBBBBBBBBBBBBBBB.........",
-	".......BBBBBBBBBBBBBBBBBBB........",
-	"......BBBBBBBBBBBBBBBBBBBBB.......",
-	".....BBBBBBBBBBBBBBBBBBBBBBB......",
-	".....BBBBBBBBBBBBBBBBBBBBBBB......",
-	"...bbbbbbbbbbbbbbbbbbbbbbbbbbb....",
-	"...bbbbbbbbbbbbbbbbbbbbbbbbbbb....",
-	"....ohhhhhhhhhhhhhhhhhhhhhhho.....",
-	"....oGGGGGGGGGGGGGGGGGGGGGGGG.....",
-	"....oGLLLLLLLLLGGGGLLLLLLLLLG.....",
-	"....oGLLLLLLLLLGGGGLLLLLLLLLG.....",
-	"....oGLLLLLLLLLGGGGLLLLLLLLLG.....",
-	"....oGLLLLLLLLLGGGGLLLLLLLLLG.....",
-	".....GGGGGGGGGGGGGGGGGGGGGGGEEp...",
-	".....ohhhhhhhhhhhhhhhhhhhhhoEE....",
-	"......ohhhhhhhhhhhhhhhhhhho.......",
-	".......ohhhhhmmmmmmmmhhhho........",
-	"........ohhhhhhhhhhhhhhho.........",
-	"..........ohhhhhhhhhhho...........",
+	".............BBBBBBBB.............",
+	"..........BBBBBBBBBBBBBB..........",
+	"........BBBBBBBBBBBBBBBBBB........",
+	".......BBBBBBBBBBBBBBBBBBBB.......",
+	"......BBBBBBBBBBBBBBBBBBBBBB......",
+	".....BBBBBBBBBBBBBBBBBBBBBBBB.....",
+	".....BBBBBBBBBBBBBBBBBBBBBBBB.....",
+	"....BBBBBBBBBBBBBBBBBBBBBBBBBB....",
+	"...bbbbbbbbbbbbbbbbbbbbbbbbbbbb...",
+	"..bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb..",
+	"...ohhhhhhhhhhhhhhhhhhhhhhhhhho...",
+	"...GGGGGGGGGGGGGGGGGGGGGGGGGGGG...",
+	"...GGGGGGGGGGGGGGGGGGGGGGGGGGGG...",
+	"...GGGGGGGGGGGGGGGGGGGGGGGGGGGG...",
+	"...oGGLLLLLLLLLGGGGLLLLLLLLLGGo...",
+	"...oGGLLLLLLLLLGGGGLLLLLLLLLGGo...",
+	"....GGLLLLLLLLLGGGGLLLLLLLLLGGEEp.",
+	"....GGLLLLLLLLLGGGGLLLLLLLLLGGEE..",
+	".....GGLLLLLLLLGGGGLLLLLLLLGG.....",
+	".....oGGGGGGGGGhhhhGGGGGGGGGo.....",
+	"......ohhhhhhhhhhhhhhhhhhhho......",
+	".......ohhhhhhhhhhhhhhhhhho.......",
+	"........ohhhhhhhhhhhhhhhho........",
+	"..........ohhmmmmmmmmhho..........",
+	".............ohhhhhho.............",
 	".............ohhhhhho.............",
 	".............ohhhhhho.............",
 	"...........tttttttttttt...........",
