@@ -34,12 +34,34 @@ func TestLogoArtRendersAtDeclaredSize(t *testing.T) {
 	t.Log("\n" + art)
 }
 
-func TestWordmarkRendersBothWordsAtDeclaredWidth(t *testing.T) {
-	w := wordmark()
-	for i, l := range strings.Split(w, "\n") {
-		if got := lipgloss.Width(l); got != 0 && got != wordmarkWidth {
+// The mark is one line across, not two stacked words, and every row of it is
+// the full declared width — a short row would leave a notch in a letter.
+func TestWordmarkIsOneLineAtDeclaredWidth(t *testing.T) {
+	rows := strings.Split(wordmark(), "\n")
+	if len(rows) != wordmarkRows {
+		t.Fatalf("%d rows, want %d — the mark must be one line across, not stacked", len(rows), wordmarkRows)
+	}
+	for i, l := range rows {
+		if got := lipgloss.Width(l); got != wordmarkWidth {
 			t.Errorf("wordmark row %d is %d columns wide, want %d", i, got, wordmarkWidth)
 		}
 	}
-	t.Log("\n" + w)
+	t.Log("\n" + wordmark())
+}
+
+// Both initials wear the purple and nothing else does: the M it opens with and
+// the C that starts CONTROL.
+func TestWordmarkColoursBothInitials(t *testing.T) {
+	if len(word) != 14 {
+		t.Fatalf("word = %q, want the fourteen letters the widths are computed from", word)
+	}
+	if !initials[0] || !initials[7] {
+		t.Errorf("initials = %v, want the M at 0 and the C at 7", initials)
+	}
+	if word[0] != 'M' || word[7] != 'C' {
+		t.Errorf("word[0]=%q word[7]=%q, want M and C", word[0], word[7])
+	}
+	if len(initials) != 2 {
+		t.Errorf("%d coloured letters, want exactly the two initials", len(initials))
+	}
 }

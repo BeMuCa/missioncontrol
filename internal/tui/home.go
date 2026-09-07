@@ -145,13 +145,17 @@ func (h *Home) render(width, height int) string {
 	}
 	centre := lipgloss.NewStyle().Width(width).Align(lipgloss.Center)
 
+	// The list is the working part, so it is measured first and the mark gets
+	// whatever is left: a logo that pushes the projects off the screen is worse
+	// than no logo. Heights are computed from the art rather than written down,
+	// so growing it cannot leave the cutoff behind.
+	body := len(h.entries) + 6
+
 	var b strings.Builder
-	// The mark is the first thing dropped when the window cannot hold it: a
-	// wrapped logo is worse than no logo, and the list is the working part.
-	if width >= logoWidth+2 && height >= 28 {
+	if width >= logoWidth+2 && height >= logoRows()+wordmarkRows+body+4 {
 		b.WriteString(centre.Render(logoArt()) + "\n\n")
 	}
-	if width >= wordmarkWidth+2 && height >= 16 {
+	if width >= wordmarkWidth+2 && height >= wordmarkRows+body+2 {
 		b.WriteString(centre.Render(wordmark()) + "\n\n")
 	} else {
 		b.WriteString(centre.Render(styHead.Render("missioncontrol")) + "\n\n")

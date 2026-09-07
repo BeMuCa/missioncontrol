@@ -41,7 +41,8 @@ missioncontrol init
 
 Danach startet `missioncontrol` von jedem Verzeichnis aus im Projekt-Launcher:
 Logo, Wordmark, darunter jedes angemeldete Projekt mit Sessionzahl und letzter
-Aktivität. Enter öffnet das Board auf der neuesten Session, `esc` führt vom Board
+Aktivität. Der Schriftzug steht einzeilig und braucht dafür 85 Spalten; darunter
+zeigt der Launcher den Namen als schlichten Text. Enter öffnet das Board auf der neuesten Session, `esc` führt vom Board
 zurück zur Liste.
 
 Wurde `missioncontrol` in einem angemeldeten Projekt gestartet, steht die
