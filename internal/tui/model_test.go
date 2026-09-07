@@ -427,3 +427,22 @@ func TestEscClosesAnOverlayBeforeLeavingTheBoard(t *testing.T) {
 		t.Error("closing an overlay must not also leave the board")
 	}
 }
+
+// The hint chain is longer than an ordinary terminal, so anything appended to
+// its end is never seen. The way back to the launcher has to survive the cut.
+func TestBackHintSurvivesFooterTruncation(t *testing.T) {
+	m := testModel(t)
+	m.AllowBack()
+	m.stacked = true
+	if got := m.footer(100); !strings.Contains(got, "esc projects") {
+		t.Errorf("footer at 100 columns = %q, want the way back to the launcher in it", got)
+	}
+
+	// A board opened directly on a session has no launcher behind it and must
+	// not claim otherwise.
+	direct := testModel(t)
+	direct.stacked = true
+	if got := direct.footer(100); strings.Contains(got, "esc projects") {
+		t.Errorf("footer = %q, want no way-back hint when there is no launcher", got)
+	}
+}

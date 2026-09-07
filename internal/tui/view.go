@@ -140,8 +140,11 @@ func (m *Model) footer(width int) string {
 	} else {
 		hints += " · f star · F favorites"
 	}
+	// Prepended, not appended: the hint chain is already longer than an ordinary
+	// terminal and gets truncated, and the way back to the launcher is the one
+	// key a first-time user has no way to guess.
 	if m.allowBack {
-		hints += " · esc projects"
+		hints = "esc projects · " + hints
 	}
 	// A footer wider than the window wraps onto a second row and pushes the
 	// board off the top.
