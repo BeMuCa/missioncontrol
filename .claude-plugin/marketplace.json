@@ -1,0 +1,6 @@
+{
+  "name": "missioncontrol",
+  "description": "MissionControl as a Claude Code mod: your question and its A#n answer, one pair at a time",
+  "owner": { "name": "BeMuCa" },
+  "plugins": [{ "name": "missioncontrol", "source": "./mod" }]
+}

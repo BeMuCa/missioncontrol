@@ -9,6 +9,81 @@ Teilfragen darin — und was davon schon beantwortet ist.
 Kein Scrollen durch Denk-Monologe, Tool-Logs und Zwischenberichte. Du siehst
 deine Frage, und du siehst die Antwort. Der Rest bleibt, wo er hingehört.
 
+## Neu: Jetzt auch als Mod!
+
+MissionControl läuft jetzt direkt in Claude Code: als Mod, ohne TUI, ohne Go,
+ohne zweites Terminal. Über der Eingabe steht genau ein Paar — deine Frage und
+Claudes Antwort darauf.
+
+![MissionControl als Mod über der Eingabe](docs/mod-band.png)
+
+- **Eine Frage, eine Antwort.** Der Mod zeigt die Teilfrage `Q#n` und den
+  `A#n`-Abschnitt, der sie beantwortet. Die Frage bleibt oben stehen, während du
+  durch die Antwort scrollst — bis das nächste Paar kommt.
+- **`A#3` tippen genügt.** Schreibst du `A#3` in die Eingabe, springt der Mod
+  schon beim Tippen auf dieses Paar. Beim Absenden geht genau diese Frage und
+  Antwort als Kontext mit, nicht der ganze Prompt. `P2 A#3` holt ein älteres.
+- **Live.** Ohne Referenz folgt der Mod dem Teil, den Claude gerade beantwortet.
+- **Oben oder rechts.** `▥ rechts` legt den Mod als Spalte neben den Chat, in
+  voller Höhe; `▤ oben` holt ihn zurück.
+- **Steuerung.** Mausrad, Pfeiltasten (nach `ctrl+x tab`) oder `k`/`j`; rechts
+  `‹ P ›` für den Prompt, `#n` für das Paar, `live` zurück zum aktuellen.
+
+![MissionControl als Spalte rechts neben dem Chat](docs/mod-pane.png)
+
+Der Mod braucht nichts außer Claude Code: Er liest das Transcript der Session
+selbst und zerlegt es nach denselben Regeln wie das TUI.
+
+### Mod installieren
+
+In Claude Code (ab 2.1.275):
+
+```
+/plugin install missioncontrol --marketplace BeMuCa/missioncontrol
+```
+
+`y` fügt den Marketplace hinzu, Enter wählt den User-Scope: Der Mod ist dann in
+jeder neuen Session aktiv, in jedem Projekt.
+
+Die `A#n`-Marker schreibt Claude nur, wenn man es darum bittet. Damit der Mod
+deine Teilfragen mit ihren Antworten zusammenbringt, gehört das in die
+`~/.claude/CLAUDE.md`:
+
+```markdown
+## Multi-part prompts
+When a prompt contains several numbered questions or tasks, begin the answer to
+each part with `A#<n>` at the start of a line, using the prompt's own numbering.
+Everything up to the next marker belongs to that part.
+```
+
+### Den Mod in ein beliebiges Repo aufnehmen
+
+So teilst du ihn über das Repo eines anderen Projekts mit deinem Team:
+
+1. Den Ordner [`mod/`](mod/) ins andere Repo kopieren, z. B. nach
+   `tools/missioncontrol/`.
+2. Im Root des anderen Repos `.claude-plugin/marketplace.json` anlegen:
+
+   ```json
+   {
+     "name": "team-tools",
+     "owner": { "name": "Dein Team" },
+     "plugins": [{ "name": "missioncontrol", "source": "./tools/missioncontrol" }]
+   }
+   ```
+
+3. Die Kollegen installieren mit
+
+   ```
+   /plugin install missioncontrol --marketplace <owner>/<repo>
+   ```
+
+   `<owner>/<repo>` ist der GitHub-Pfad des anderen Repos
+   (`github.com/<owner>/<repo>`), nicht der `owner` aus der `marketplace.json` —
+   der ist nur ein Anzeigename. Statt eines GitHub-Pfads geht auch eine Git-URL.
+
+Nur ausprobieren, ohne zu installieren: `claude --plugin-dir <pfad>/mod`.
+
 ## Was es zeigt
 
 Der Board-Baum hat drei Ebenen, direkt aus dem Session-Transcript gelesen:
@@ -21,6 +96,8 @@ Der Board-Baum hat drei Ebenen, direkt aus dem Session-Transcript gelesen:
 
 Dazu: Favoriten für Antworten, die du behalten willst, und Done-Marker für Teile,
 die abgehakt sind.
+
+![Das Board im Terminal](docs/tui.png)
 
 ## Installation
 

@@ -1,0 +1,7 @@
+{
+  "name": "missioncontrol",
+  "version": "0.1.0",
+  "description": "MissionControl inside Claude Code: one question and its A#n answer above the prompt or on the right, a P1..Pn switcher, and A#n in your prompt opens and references that pair",
+  "author": { "name": "BeMuCa" },
+  "types": "./types/index.d.ts"
+}
